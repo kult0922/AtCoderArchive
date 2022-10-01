@@ -348,12 +348,70 @@ ll toNum(string s){
 int main() {
   int n;
   cin >> n;
-  int sum = 0;
+  V<ll> a(n);
+  rep(i, n) cin >> a[i];
+
+  map<ll, ll> mp;
   rep(i, n){
-    int x;
-    cin >> x;
-    sum += x;
+    mp[a[i]]++;
   }
-  cout << sum << endl;
+
+  ll comp = 0;
+  for(int i = 1; i <= n; i++){
+    if(contains_key(mp, i)){
+      comp++;
+    }else{
+      break;
+    }
+  }
+
+  for(int i = 1; i <= comp; i++){
+    mp[i]--;
+  }
+
+  V<ll> left;
+  V<ll> dupli;
+  for(auto m : mp){
+    rep(i, m.second){
+      if(i == 0 && m.first > comp){
+        left.push_back(m.first);
+      }else{
+        dupli.push_back(m.first);
+      }
+    }
+  }
+
+  sort(left.begin(), left.end());
+  rep(i, dupli.size()){
+    left.push_back(dupli[i]);
+  }
+  //print(left);
+
+  std::deque<ll> dq;
+  rep(i, left.size()){
+    dq.push_back(left[i]);
+  }
+
+  while (dq.size() >= 2)
+  {
+    ll next = dq.front();
+    if (next == comp + 1){
+      comp++;
+      dq.pop_front();
+    }else{
+      dq.pop_back();
+      dq.pop_back();
+      comp++;
+    }
+  }
+
+  if(dq.size() == 1){
+    ll next = dq.front();
+    if (next == comp + 1){
+      comp++;
+    }
+  }
+
+  cout << comp << endl;
 
 }

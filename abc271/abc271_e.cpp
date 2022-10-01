@@ -346,14 +346,37 @@ ll toNum(string s){
 }
 
 int main() {
-  int n;
-  cin >> n;
-  int sum = 0;
-  rep(i, n){
-    int x;
-    cin >> x;
-    sum += x;
+  int n, m, k;
+  cin >> n >> m >> k;
+  V<ll> a(m);
+  V<ll> b(m);
+  V<ll> c(m);
+  V<ll> e(k);
+  rep(i, m) cin >> a[i] >> b[i] >> c[i];
+  rep(i, k) cin >> e[i];
+  rep(i, m) {
+    a[i]--;
+    b[i]--;
   }
-  cout << sum << endl;
+  rep(i, k) e[i]--;
+
+  V<ll> idp(n, INF);
+  idp[0] = 0;
+
+  rep(i, k){
+    ll from = a[e[i]];
+    ll to = b[e[i]];
+    ll cost = c[e[i]];
+
+    if (idp[from] != INF){
+      idp[to] = min(idp[to], idp[from] + cost);
+    }
+  }
+
+  if(idp[n-1] == INF){
+    cout << -1 << endl;
+  }else{
+    cout << idp[n-1] << endl;
+  }
 
 }

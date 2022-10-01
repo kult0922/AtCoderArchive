@@ -346,14 +346,24 @@ ll toNum(string s){
 }
 
 int main() {
-  int n;
-  cin >> n;
-  int sum = 0;
+  int n, q;
+  cin >> n >> q;
+  V<V<ll>> a(n);
   rep(i, n){
-    int x;
-    cin >> x;
-    sum += x;
+    int l;
+    cin >> l;
+    rep(j, l){
+      ll x;
+      cin >> x;
+      a[i].push_back(x);
+    }
   }
-  cout << sum << endl;
+  rep(i, q){
+    int s, t;
+    cin >> s >> t;
+    s--;
+    t--;
+    print(a[s][t]);
+  }
 
 }

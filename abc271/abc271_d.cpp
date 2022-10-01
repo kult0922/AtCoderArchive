@@ -346,14 +346,51 @@ ll toNum(string s){
 }
 
 int main() {
-  int n;
-  cin >> n;
-  int sum = 0;
-  rep(i, n){
-    int x;
-    cin >> x;
-    sum += x;
-  }
-  cout << sum << endl;
+  ll n, s;
+  cin >> n >> s;
+  V<ll> a(n);
+  V<ll> b(n);
+  rep(i, n) cin >> a[i] >> b[i];
+  V<V<bool>> dp(n + 1, V<bool>(s+1, false));
+  dp[0][0] = true;
 
+  for(int i = 1; i <= n; i++){
+    for(int j = 0; j <= s; j++){
+      // 表
+      if(j-a[i-1] >= 0) {
+        if(dp[i-1][j-a[i-1]]){
+          dp[i][j] = true;
+        }
+      }
+      // 裏
+      if(j-b[i-1] >= 0){
+        if(dp[i-1][j-b[i-1]]){
+          dp[i][j] = true;
+        }
+      }
+    }
+  }
+
+  if(dp[n][s]){
+    ll cur = s;
+    string ans = "";
+    for(int i = n; i > 0; i--){
+      if( (cur - a[i-1]) >= 0 && dp[i-1][cur - a[i-1]]){
+        ans += 'H';
+        cur -= a[i-1];
+        continue;
+      }else{
+        ans += 'T';
+        cur -= b[i-1];
+        continue;
+      }
+    }
+    reverse(ans.begin(), ans.end());
+
+    
+    print("Yes");
+    print(ans);
+  }else{
+    print("No");
+  }
 }
